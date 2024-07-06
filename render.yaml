@@ -53,7 +53,7 @@ services:
     disk:
       name: mysql
       mountPath: /var/lib/mysql
-      sizeGB: 10
+      sizeGB: 50
     envVars:
       - key: MYSQL_DATABASE
         value: fleet
