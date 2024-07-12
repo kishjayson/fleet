@@ -294,9 +294,9 @@ type Service interface {
 	// /////////////////////////////////////////////////////////////////////////////
 	// CampaignService defines the distributed query campaign related service methods
 
-	// NewDistributedQueryCampaignByNames creates a new distributed query campaign with the provided query (or the query
-	// referenced by ID) and host/label targets (specified by name).
-	NewDistributedQueryCampaignByNames(
+	// NewDistributedQueryCampaignByIdentifiers creates a new distributed query campaign with the provided query (or the query
+	// referenced by ID) and host/label targets (specified by hostname, UUID, or hardware serial).
+	NewDistributedQueryCampaignByIdentifiers(
 		ctx context.Context, queryString string, queryID *uint, hosts []string, labels []string,
 	) (*DistributedQueryCampaign, error)
 
@@ -749,7 +749,7 @@ type Service interface {
 	GetMDMAppleProfilesSummary(ctx context.Context, teamID *uint) (*MDMProfilesSummary, error)
 
 	// GetMDMAppleEnrollmentProfileByToken returns the Apple enrollment from its secret token.
-	GetMDMAppleEnrollmentProfileByToken(ctx context.Context, enrollmentToken string, enrollmentRef string) (profile []byte, err error)
+	GetMDMAppleEnrollmentProfileByToken(ctx context.Context, enrollmentToken string, enrollmentRef string, deviceinfo string) (profile []byte, err error)
 
 	// GetDeviceMDMAppleEnrollmentProfile loads the raw (PList-format) enrollment
 	// profile for the currently authenticated device.
@@ -1058,4 +1058,10 @@ type Service interface {
 	GetSoftwareInstallerMetadata(ctx context.Context, titleID uint, teamID *uint) (*SoftwareInstaller, error)
 	DownloadSoftwareInstaller(ctx context.Context, titleID uint, teamID *uint) (*DownloadSoftwareInstallerPayload, error)
 	OrbitDownloadSoftwareInstaller(ctx context.Context, installerID uint) (*DownloadSoftwareInstallerPayload, error)
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// Maintenance windows
+
+	// CalendarWebhook handles incoming calendar callback requests.
+	CalendarWebhook(ctx context.Context, eventUUID string, channelID string, resourceState string) error
 }
